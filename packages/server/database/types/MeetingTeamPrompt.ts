@@ -15,7 +15,6 @@ interface Input {
 
 export default class MeetingTeamPrompt extends Meeting {
   meetingType!: 'teamPrompt'
-
   constructor(input: Input) {
     const {id, teamId, meetingCount, name, phases, facilitatorUserId} = input
     super({

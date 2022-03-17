@@ -7,8 +7,7 @@ import {
   LAST_CALL,
   REFLECT,
   UPDATES,
-  VOTE,
-  RESPONSES
+  VOTE
 } from 'parabol-client/utils/constants'
 import toTeamMemberId from '../../../../client/utils/relay/toTeamMemberId'
 import getRethink from '../../../database/rethinkDriver'
@@ -134,7 +133,7 @@ const createNewMeetingPhases = async (
         case FIRST_CALL:
         case LAST_CALL:
         case 'SCOPE':
-        case RESPONSES:
+        case 'RESPONSES':
           return new GenericMeetingPhase(phaseType, durations)
         case 'RESPONSES':
           const teamMembers = await dataLoader.get('teamMembersByTeamId').load(teamId)

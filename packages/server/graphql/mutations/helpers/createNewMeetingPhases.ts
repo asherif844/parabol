@@ -133,7 +133,6 @@ const createNewMeetingPhases = async (
         case FIRST_CALL:
         case LAST_CALL:
         case 'SCOPE':
-        case 'RESPONSES':
           return new GenericMeetingPhase(phaseType, durations)
         case 'RESPONSES':
           const teamMembers = await dataLoader.get('teamMembersByTeamId').load(teamId)

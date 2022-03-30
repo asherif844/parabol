@@ -1,11 +1,10 @@
 import {GraphQLList, GraphQLNonNull, GraphQLObjectType} from 'graphql'
-import toTeamMemberId from 'parabol-client/utils/relay/toTeamMemberId'
-import {getUserId} from '../../utils/authorization'
 import {GQLContext} from '../graphql'
 import TeamPromptMeetingMember from './TeamPromptMeetingMember'
 import NewMeeting, {newMeetingFields} from './NewMeeting'
 import TeamPromptResponse from './TeamPromptResponse'
 import TeamPromptMeetingSettings from './TeamPromptMeetingSettings'
+import {getTeamPromptResponsesByMeetingIds} from '../../postgres/queries/getTeamPromptResponsesByMeetingIds'
 
 const TeamPromptMeeting = new GraphQLObjectType<any, GQLContext>({
   name: 'TeamPromptMeeting',
@@ -23,21 +22,16 @@ const TeamPromptMeeting = new GraphQLObjectType<any, GQLContext>({
     responses: {
       type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(TeamPromptResponse))),
       description: 'The tasks created within the meeting',
-      resolve: () => {
-        // TODO: implement fetching responses
-        return []
+      resolve: async ({id: meetingId}: {id: string}, _args: unknown, {}) => {
+        const responses = await getTeamPromptResponsesByMeetingIds([meetingId])
+        return responses
       }
     },
     viewerMeetingMember: {
       type: TeamPromptMeetingMember,
       description: 'The team prompt meeting member of the viewer',
-      resolve: async (
-        {id: meetingId}: {id: string},
-        _args: unknown,
-        {authToken, dataLoader}: GQLContext
-      ) => {
-        const viewerId = getUserId(authToken)
-        const meetingMemberId = toTeamMemberId(meetingId, viewerId)
+      resolve: async (_tmp, _args: unknown, {dataLoader}: GQLContext) => {
+        const meetingMemberId = 'google-oauth2|108115215397624050772::-Ztk9eu8Vw'
         return dataLoader.get('meetingMembers').load(meetingMemberId)
       }
     }

@@ -67,6 +67,15 @@ const getPastStageDurations = async (teamId: string) => {
   )
 }
 
+const emptyDoc = {
+  type: 'doc',
+  content: [
+    {
+      type: 'paragraph'
+    }
+  ]
+}
+
 const createNewMeetingPhases = async (
   facilitatorUserId: string,
   teamId: string,
@@ -150,7 +159,7 @@ const createNewMeetingPhases = async (
             meetingId,
             userId: stage.teamMemberId.split('::')[0],
             sortOrder: index,
-            content: {},
+            content: emptyDoc,
             plaintextContent: ''
           }))
           asyncSideEffects.push(upsertTeamPromptResponses(teamMemberPromptResponses))

@@ -9,7 +9,8 @@ export interface IUpsertPromptResponseQueryParams {
     meetingId: string | null | void,
     userId: string | null | void,
     sortOrder: number | null | void,
-    content: Json | null | void
+    content: Json | null | void,
+    plaintextContent: string | null | void
   };
 }
 
@@ -22,12 +23,12 @@ export interface IUpsertPromptResponseQueryQuery {
   result: IUpsertPromptResponseQueryResult;
 }
 
-const upsertPromptResponseQueryIR: any = {"name":"upsertPromptResponseQuery","params":[{"name":"response","codeRefs":{"defined":{"a":46,"b":53,"line":3,"col":9},"used":[{"a":190,"b":197,"line":6,"col":8}]},"transform":{"type":"pick_tuple","keys":["meetingId","userId","sortOrder","content"]}}],"usedParamSet":{"response":true},"statement":{"body":"INSERT INTO \"TeamPromptResponse\" (\"meetingId\", \"userId\", \"sortOrder\", \"content\")\nVALUES :response","loc":{"a":101,"b":197,"line":5,"col":0}}};
+const upsertPromptResponseQueryIR: any = {"name":"upsertPromptResponseQuery","params":[{"name":"response","codeRefs":{"defined":{"a":46,"b":53,"line":3,"col":9},"used":[{"a":228,"b":235,"line":6,"col":8}]},"transform":{"type":"pick_tuple","keys":["meetingId","userId","sortOrder","content","plaintextContent"]}}],"usedParamSet":{"response":true},"statement":{"body":"INSERT INTO \"TeamPromptResponse\" (\"meetingId\", \"userId\", \"sortOrder\", \"content\", \"plaintextContent\")\nVALUES :response","loc":{"a":119,"b":235,"line":5,"col":0}}};
 
 /**
  * Query generated from SQL:
  * ```
- * INSERT INTO "TeamPromptResponse" ("meetingId", "userId", "sortOrder", "content")
+ * INSERT INTO "TeamPromptResponse" ("meetingId", "userId", "sortOrder", "content", "plaintextContent")
  * VALUES :response
  * ```
  */

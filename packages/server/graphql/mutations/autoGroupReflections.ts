@@ -2,13 +2,13 @@ import {GraphQLFloat, GraphQLID, GraphQLNonNull} from 'graphql'
 import {SubscriptionChannel} from 'parabol-client/types/constEnums'
 import {GROUP} from 'parabol-client/utils/constants'
 import isPhaseComplete from 'parabol-client/utils/meetings/isPhaseComplete'
-import groupReflections from 'parabol-client/utils/smartGroup/groupReflections'
 import getRethink from '../../database/rethinkDriver'
 import {getUserId, isTeamMember} from '../../utils/authorization'
 import publish from '../../utils/publish'
 import standardError from '../../utils/standardError'
 import {GQLContext} from '../graphql'
 import AutoGroupReflectionsPayload from '../types/AutoGroupReflectionsPayload'
+import groupReflections from './helpers/groupReflections'
 
 export default {
   type: AutoGroupReflectionsPayload,
@@ -35,11 +35,7 @@ export default {
     const viewerId = getUserId(authToken)
 
     // AUTH
-    const meeting = await r
-      .table('NewMeeting')
-      .get(meetingId)
-      .default(null)
-      .run()
+    const meeting = await r.table('NewMeeting').get(meetingId).default(null).run()
     if (!meeting) return standardError(new Error('Meeting not found'), {userId: viewerId})
     const {endedAt, phases, teamId} = meeting
     if (endedAt) return standardError(new Error('Meeting already ended'), {userId: viewerId})
@@ -95,13 +91,10 @@ export default {
             updatedAt: now
           } as any)
       }),
-      meeting: r
-        .table('NewMeeting')
-        .get(meetingId)
-        .update({
-          autoGroupThreshold,
-          nextAutoGroupThreshold: nextThresh
-        })
+      meeting: r.table('NewMeeting').get(meetingId).update({
+        autoGroupThreshold,
+        nextAutoGroupThreshold: nextThresh
+      })
     }).run()
 
     const reflectionGroupIds = groups.map(({id}) => id)

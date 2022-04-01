@@ -1,8 +1,8 @@
-import Reflection from '~/../server/database/types/Reflection'
-import computeDistanceMatrix from './computeDistanceMatrix'
-import getAllLemmasFromReflections from './getAllLemmasFromReflections'
+import computeDistanceMatrix from '../../../../client/utils/smartGroup/computeDistanceMatrix'
+import getAllLemmasFromReflections from '../../../../client/utils/smartGroup/getAllLemmasFromReflections'
+import getTitleFromComputedGroup from '../../../../client/utils/smartGroup/getTitleFromComputedGroup'
+import Reflection from '../../../database/types/Reflection'
 import getGroupMatrix from './getGroupMatrix'
-import getTitleFromComputedGroup from './getTitleFromComputedGroup'
 
 /*
  * Read each reflection, parse the content for entities (i.e. nouns), group the reflections based on common themes
@@ -39,10 +39,11 @@ const groupReflections = <T extends Reflection>(
   const uniqueLemmaArr = getAllLemmasFromReflections(allReflectionEntities)
   // create a distance vector for each reflection
   const distanceMatrix = computeDistanceMatrix(allReflectionEntities, uniqueLemmaArr)
-  const {groups: groupedArrays, thresh, nextThresh} = getGroupMatrix(
-    distanceMatrix,
-    groupingOptions
-  )
+  const {
+    groups: groupedArrays,
+    thresh,
+    nextThresh
+  } = getGroupMatrix(distanceMatrix, groupingOptions)
   // replace the arrays with reflections
   const updatedReflections = [] as GroupedReflectionRes[]
   const reflectionGroupMapping = {} as Record<string, string>

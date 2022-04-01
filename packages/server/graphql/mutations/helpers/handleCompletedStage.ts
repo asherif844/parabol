@@ -1,12 +1,12 @@
 import {AUTO_GROUPING_THRESHOLD, GROUP, REFLECT, VOTE} from 'parabol-client/utils/constants'
-import {AnyMeeting} from '../../../postgres/types/Meeting'
-import groupReflections from '../../../../client/utils/smartGroup/groupReflections'
 import getRethink from '../../../database/rethinkDriver'
 import GenericMeetingStage from '../../../database/types/GenericMeetingStage'
 import MeetingRetrospective from '../../../database/types/MeetingRetrospective'
 import insertDiscussions from '../../../postgres/queries/insertDiscussions'
+import {AnyMeeting} from '../../../postgres/types/Meeting'
 import {DataLoaderWorker} from '../../graphql'
 import addDiscussionTopics from './addDiscussionTopics'
+import groupReflections from './groupReflections'
 import removeEmptyReflections from './removeEmptyReflections'
 
 /*

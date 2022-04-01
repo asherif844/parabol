@@ -14,7 +14,6 @@ import {
   MAX_REDUCTION_PERCENTAGE,
   MAX_RESULT_GROUP_SIZE
 } from '../../../client/utils/constants'
-import groupReflections from '../../../client/utils/smartGroup/groupReflections'
 import getRethink from '../../database/rethinkDriver'
 import MeetingMemberType from '../../database/types/MeetingMember'
 import OrganizationType from '../../database/types/Organization'
@@ -31,6 +30,7 @@ import standardError from '../../utils/standardError'
 import errorFilter from '../errorFilter'
 import {DataLoaderWorker, GQLContext} from '../graphql'
 import isValid from '../isValid'
+import groupReflections from '../mutations/helpers/groupReflections'
 import invoiceDetails from '../queries/invoiceDetails'
 import invoices from '../queries/invoices'
 import organization from '../queries/organization'

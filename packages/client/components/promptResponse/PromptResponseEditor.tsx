@@ -1,20 +1,19 @@
-import React, {useState} from 'react'
-import Placeholder from '@tiptap/extension-placeholder'
-import {EditorContent, Editor, EditorEvents, useEditor} from '@tiptap/react'
 import {Editor as EditorState} from '@tiptap/core'
+import Placeholder from '@tiptap/extension-placeholder'
+import {Editor, EditorContent, EditorEvents, JSONContent, useEditor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import React, {useState} from 'react'
 
 interface Props {
   autoFocus?: boolean
-  editorState: EditorState
-  setEditorState: (newEditorState: EditorState) => void
+  content: JSONContent
   handleSubmit: (editor: EditorState) => void
   readOnly: boolean
   placeholder: string
 }
 
 const PromptResponseEditor = (props: Props) => {
-  const {autoFocus: autoFocusProp, editorState, setEditorState, handleSubmit, readOnly, placeholder} = props
+  const {autoFocus: autoFocusProp, content, handleSubmit, readOnly, placeholder} = props
   const [_isEditing, setIsEditing] = useState(false)
   const [autoFocus, setAutoFocus] = useState(autoFocusProp)
 
@@ -23,9 +22,8 @@ const PromptResponseEditor = (props: Props) => {
     setAutoFocus(false)
   }
 
-  const onUpdate = ({editor: newEditorState}: EditorEvents['update']) => {
+  const onUpdate = () => {
     setEditing(true)
-    setEditorState(newEditorState)
   }
 
   const onSubmit = async ({editor: newEditorState}: EditorEvents['blur']) => {
@@ -33,10 +31,9 @@ const PromptResponseEditor = (props: Props) => {
     handleSubmit(newEditorState)
   }
 
-  const doc = editorState.getText()
-  const showPlaceholder = !doc && !!placeholder
+  const showPlaceholder = !content && !!placeholder
   const editor: Editor | null = useEditor({
-    content: editorState.getJSON(),
+    content,
     extensions: [
       StarterKit,
       Placeholder.configure({
@@ -46,13 +43,9 @@ const PromptResponseEditor = (props: Props) => {
     autofocus: autoFocus,
     onUpdate,
     onBlur: onSubmit,
-    editable: !readOnly,
+    editable: !readOnly
   })
 
-  return (
-    <EditorContent
-      editor={editor}
-    />
-  )
+  return <EditorContent editor={editor} />
 }
 export default PromptResponseEditor
